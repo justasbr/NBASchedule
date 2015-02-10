@@ -19,7 +19,7 @@ import java.io.OutputStream;
 
 public class ScheduleAdapter {
 
-    private static final String TAG = "ScheduleAdapter";
+    private static final String LOG_TAG = ScheduleAdapter.class.getSimpleName();
     private DatabaseHelper mDbHelper;
     private static SQLiteDatabase mDb;
 
@@ -57,8 +57,8 @@ public class ScheduleAdapter {
 
 
     public Cursor getFutureRows(){
-        String currentETtime = Utility.getCurrentETtime(); //yyyyMMddHHmm
-        Log.v("currentETtime", currentETtime);
+        final int GAME_TIME = 2; //to show currently played games
+        String currentETtime = Utility.getCurrentETtime(-GAME_TIME); //yyyyMMddHHmm
     //    Log.v("DATE", currentTime);
         String sql = "SELECT * FROM schedule where datetime >= " + currentETtime;
         return mDb.rawQuery(sql, null);
@@ -87,7 +87,7 @@ public class ScheduleAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.w(TAG, "Upgrading database!!!!!");
+            Log.w(LOG_TAG, "Upgrading database");
             //db.execSQL("");
             onCreate(db);
         }
@@ -174,6 +174,8 @@ public class ScheduleAdapter {
             super.close();
 
         }
+
+
     }
 
 }

@@ -1,8 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:gravity="center"
-    android:id="@+id/list_item_schedule_textview"
-    android:textColor="#ff000000" />
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="4">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_date_textview"
+            android:textColor="#ff232aaf"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/abc_text_size_caption_material" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_time_textview"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:textSize="@dimen/abc_text_size_title_material" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item_away_textview"
+        android:layout_weight="3"
+        android:gravity="center"
+        style="@style/Base.TextAppearance.AppCompat.Medium" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AT"
+        android:layout_weight="0" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item_home_textview"
+        android:layout_weight="3"
+        android:gravity="center"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        />
+
+
+</LinearLayout>
