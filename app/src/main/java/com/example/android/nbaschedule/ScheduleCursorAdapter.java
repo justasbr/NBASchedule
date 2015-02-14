@@ -52,11 +52,13 @@ public class ScheduleCursorAdapter extends CursorAdapter {
         cal.add(Calendar.HOUR_OF_DAY, Utility.getTimezoneChange());
         String formattedDateTime = sdfOutput.format(cal.getTime());
         String formattedTime = formattedDateTime.substring(6);
+
         //if (formattedTime.equals("00:00")){
         //    formattedTime = "23:59";
         //    cal.add(Calendar.DATE, -1);
         //    formattedDateTime = sdfOutput.format(cal.getTime()); //shift back one day
         //}
+
         String formattedDate = formattedDateTime.substring(0, 5);
         String friendlyDate = Utility.formFriendlyDate(formattedDate);
 

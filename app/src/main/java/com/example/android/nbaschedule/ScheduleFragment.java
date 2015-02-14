@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 
 public class ScheduleFragment extends Fragment {
     private ScheduleCursorAdapter mScheduleCursorAdapter;
+    String LOG_TAG = ScheduleFragment.class.getSimpleName();
+    private static int currentPosition;
 
     public ScheduleFragment() {
     }
@@ -30,6 +32,8 @@ public class ScheduleFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                currentPosition = adapterView.getFirstVisiblePosition();
+                Log.v(LOG_TAG, "currentPosition " + currentPosition);
                 Cursor c = mScheduleCursorAdapter.getCursor();
                 c.moveToPosition(position);
                 String home = c.getString(c.getColumnIndex("home"));
@@ -44,10 +48,6 @@ public class ScheduleFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        //listView.
-
-        //listView.setOnItemClickListener(null);
         return rootView;
     }
 
@@ -56,10 +56,25 @@ public class ScheduleFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+
         ScheduleAdapter schedule_DB = new ScheduleAdapter(getActivity());
         schedule_DB.open();
         Cursor c = schedule_DB.getFutureRows();
         mScheduleCursorAdapter = new ScheduleCursorAdapter(getActivity(), c, 0);
 
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.v(LOG_TAG, "onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onResume() {
+        AdapterView listView = (AdapterView) getView().findViewById(R.id.listview_schedule);
+        Log.v(LOG_TAG, "currentpos onResume " + currentPosition);
+        listView.setSelection(currentPosition);
+        super.onResume();
     }
 }

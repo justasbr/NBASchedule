@@ -24,12 +24,12 @@ public class ScheduleAdapter {
     private static SQLiteDatabase mDb;
 
     private static String DB_PATH = "/data/data/com.example.android.nbaschedule/databases/";
-    private static final String DATABASE_NAME = "schedules.db";
+    private static final String DATABASE_NAME = "schedules2.db";
 
-    public final String TABLE_NAME = "schedule";
+    //public final String TABLE_NAME = "schedule";
 
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 6;
 
     private final Context adapterContext;
 
@@ -59,9 +59,21 @@ public class ScheduleAdapter {
     public Cursor getFutureRows(){
         final int GAME_TIME = 2; //to show currently played games
         String currentETtime = Utility.getCurrentETtime(-GAME_TIME); //yyyyMMddHHmm
+        String orderBy = "ORDER BY datetime asc";
     //    Log.v("DATE", currentTime);
-        String sql = "SELECT * FROM schedule where datetime >= " + currentETtime;
+        String sql = "SELECT * FROM schedule where datetime >= " + currentETtime + " " + orderBy;
         return mDb.rawQuery(sql, null);
+    }
+
+    public String getTeamPictureURL(String team){
+        String sql = "SELECT picture_url from Pictures where team='" + team + "'";
+        Cursor c = mDb.rawQuery(sql, null);
+        String pic_url = team;
+        if (c.moveToNext()){
+            pic_url = c.getString(0);
+        }
+        c.close();
+        return pic_url;
     }
 
     public Cursor getAllRows(){
@@ -88,12 +100,14 @@ public class ScheduleAdapter {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.w(LOG_TAG, "Upgrading database");
-            //db.execSQL("");
+            db.execSQL("DROP TABLE IF EXISTS schedule");
+            db.execSQL("DROP TABLE IF EXISTS Pictures");
             onCreate(db);
         }
 
         public void createDataBase() throws IOException {
-            boolean dbExist = checkDataBase();
+            boolean dbExist = false; //checkDataBase();
+            Log.v(LOG_TAG, "createDataBase");
             if (dbExist) {
             } else {
 
@@ -126,6 +140,8 @@ public class ScheduleAdapter {
                 String myPath = DB_PATH + DATABASE_NAME;
                 checkDB = SQLiteDatabase.openDatabase(myPath, null,
                         SQLiteDatabase.OPEN_READONLY);
+                int version = checkDB.getVersion();
+                Log.v(LOG_TAG, "current db version " + version);
             } catch (SQLiteException e) {
             }
             if (checkDB != null) {
@@ -163,6 +179,8 @@ public class ScheduleAdapter {
             String myPath = DB_PATH + DATABASE_NAME;
             mDb = SQLiteDatabase.openDatabase(myPath, null,
                     SQLiteDatabase.OPEN_READWRITE);
+            mDb.setVersion(DATABASE_VERSION);
+            Log.v(LOG_TAG, "openDatabase");
         }
 
         @Override

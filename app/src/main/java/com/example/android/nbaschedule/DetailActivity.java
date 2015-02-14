@@ -56,21 +56,25 @@ public class DetailActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            ScheduleAdapter schedule_DB = new ScheduleAdapter(getActivity());
+            //schedule_DB.open();
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
             // The detail Activity called via intent.  Inspect the intent for forecast data.
             Intent intent = getActivity().getIntent();
             if (intent != null && intent.hasExtra("home") && intent.hasExtra("away")
                     && intent.hasExtra("datetime")) {
+
                 int position = intent.getExtras().getInt("position");
-                String home = intent.getExtras().getString("home");
-                String away = intent.getExtras().getString("away");
+                String home = schedule_DB.getTeamPictureURL(intent.getExtras().getString("home"));
+                String away = schedule_DB.getTeamPictureURL(intent.getExtras().getString("away"));
                 String datetime = intent.getExtras().getString("datetime");
 
                 String gameInfoStr = away + " versus " + home + " T: " + datetime;
                 ((TextView) rootView.findViewById(R.id.detail_text))
                         .setText(gameInfoStr);
             }
+            //schedule_DB.close();
 
 
 
