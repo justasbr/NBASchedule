@@ -43,8 +43,7 @@ public class ScheduleFragment extends Fragment {
                 intent.putExtra("home", home);
                 intent.putExtra("away", away);
                 intent.putExtra("datetime", datetime);
-                String log_string = String.valueOf(position) + " " + away + " at " + home;
-                Log.v("onClick", log_string);
+                intent.putExtra("position", position);
                 startActivity(intent);
             }
         });
